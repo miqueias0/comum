@@ -11,13 +11,13 @@ public interface IAutenticationService {
 
     @GET()
     @Path("/validarToken")
-    public Response validarToken(@QueryParam("token") String token) throws Exception;
+    Response validarToken(@QueryParam("token") String token) throws Exception;
 
     @POST
     @Path("/criarToken")
-    public Response criarToken(@QueryParam("id") String id, @QueryParam("tempoToken") Integer tempoToken) throws Exception;
+    Response criarToken(@QueryParam("id") String id, @QueryParam("tempoToken") Integer tempoToken) throws Exception;
 
     @POST
     @Path("/atualizarToken")
-    public Response atualizarToken(@QueryParam("token") String token) throws Exception;
+    Response atualizarToken(@QueryParam("token") String token) throws Exception;
 }
