@@ -4,6 +4,11 @@ import br.com.mike.comum.records.AutenticacaoRecord;
 import br.com.mike.comum.records.TokenRecord;
 import br.com.mike.comum.serviceInterface.IAutenticationService;
 import io.quarkus.rest.client.reactive.QuarkusRestClientBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 
@@ -15,6 +20,24 @@ public class AutenticationService{
         iAutenticationService = QuarkusRestClientBuilder.newBuilder()
                 .baseUri(URI.create(url))
                 .build(IAutenticationService.class);
+    }
+
+    private RestTemplate restTemplate;
+    private static String CAMINHO;
+    public AutenticationService(String url, HttpHeaders sec) throws Exception{
+        CAMINHO = url + "/seguranca";
+        restTemplate = new RestTemplate();
+//        restTemplate.setInterceptors(Collections.singletonList(new Inteceptor(sec)));
+    }
+
+
+    public AutenticacaoRecord validarToken() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+        var value = restTemplate.exchange(CAMINHO + "/validarToken", HttpMethod.GET, requestEntity, AutenticacaoRecord.class);
+        return value.getBody();
     }
 
     public AutenticacaoRecord validarToken(String token) throws Exception {
